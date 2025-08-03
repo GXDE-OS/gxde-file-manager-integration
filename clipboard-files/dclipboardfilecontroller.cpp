@@ -90,7 +90,7 @@ const QList<DAbstractFileInfoPointer> DClipboardFileController::getChildren(cons
     return list;
 }
 
-const DAbstractFileInfoPointer DClipboardFileController::createFileInfo(const QSharedPointer<DFMCreateFileInfoEvnet> &event) const
+const DAbstractFileInfoPointer DClipboardFileController::createFileInfo(const QSharedPointer<DFMCreateFileInfoEvent> &event) const
 {
     Q_UNUSED(event)
 

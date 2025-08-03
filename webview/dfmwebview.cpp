@@ -11,9 +11,10 @@
 #include <dfmevent.h>
 #include <dfmeventdispatcher.h>
 
-#include <QWebHistory>
+#include <QWebEngineHistory>
 #include <QAction>
-#include <QWebHitTestResult>
+#include <QWebEngineContextMenuData>
+#include <QWebEngineSettings>
 #include <QMenu>
 
 class DFMWebViewPrivate
@@ -25,14 +26,11 @@ public:
 DFMWebView *DFMWebViewPrivate::lastCreateWebView = Q_NULLPTR;
 
 DFMWebView::DFMWebView(QWidget *parent)
-    : QWebView(parent)
+    : QWebEngineView(parent)
 {
     DFMWebViewPrivate::lastCreateWebView = this;
 
-    page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
-
-    connect(this, &DFMWebView::urlChanged, this, &DFMWebView::notifyUrlChanged);
-    connect(this, &DFMWebView::linkClicked, this, &DFMWebView::setUrl);
+    connect(this, &QWebEngineView::urlChanged, this, &DFMWebView::notifyUrlChanged);
 
     DFMEventDispatcher::instance()->installEventFilter(this);
 }
@@ -90,9 +88,9 @@ bool DFMWebView::fmEventFilter(const QSharedPointer<DFMEvent> &event, DFMAbstrac
     return false;
 }
 
-QWebView *DFMWebView::createWindow(QWebPage::WebWindowType type)
+QWebEngineView *DFMWebView::createWindow(QWebEnginePage::WebWindowType type)
 {
-    if (type != QWebPage::WebBrowserWindow)
+    if (type != QWebEnginePage::WebBrowserWindow)
         return Q_NULLPTR;
 
     DFMWebView *lastCreateWebView = DFMWebViewPrivate::lastCreateWebView;
@@ -107,25 +105,26 @@ QWebView *DFMWebView::createWindow(QWebPage::WebWindowType type)
 
 void DFMWebView::contextMenuEvent(QContextMenuEvent *event)
 {
-    const DUrl &url = page()->mainFrame()->hitTestContent(event->pos()).linkUrl();
+    const QWebEngineContextMenuData &data = page()->contextMenuData();
+    const DUrl url = data.linkUrl();
 
     if (url.isEmpty()) {
-        return QWebView::contextMenuEvent(event);
+        return QWebEngineView::contextMenuEvent(event);
     }
 
     QMenu menu(this);
-    menu.addAction(pageAction(QWebPage::OpenLinkInNewWindow));
+    menu.addAction(pageAction(QWebEnginePage::OpenLinkInNewWindow));
 
     connect(menu.addAction(tr("Open in New Tab")), &QAction::triggered, this, [this, url] {
         openLinkInNewTab(url);
     });
 
     menu.addSeparator();
-    menu.addAction(pageAction(QWebPage::DownloadLinkToDisk));
+    menu.addAction(pageAction(QWebEnginePage::DownloadLinkToDisk));
     // Add link to bookmarks...
     menu.addSeparator();
-    menu.addAction(pageAction(QWebPage::CopyLinkToClipboard));
-    if (page()->settings()->testAttribute(QWebSettings::DeveloperExtrasEnabled))
-        menu.addAction(pageAction(QWebPage::InspectElement));
+    menu.addAction(pageAction(QWebEnginePage::CopyLinkToClipboard));
+    /*if (page()->settings()->testAttribute(QWebEngineSettings::DeveloperExtrasEnabled))
+        menu.addAction(pageAction(QWebEnginePage::InspectElement));*/
     menu.exec(mapToGlobal(event->pos()));
 }

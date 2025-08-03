@@ -12,11 +12,11 @@
 #include <dfmbaseview.h>
 #include <dfmabstracteventhandler.h>
 
-#include <QWebView>
+#include <QWebEngineView>
 
 DFM_USE_NAMESPACE
 
-class DFMWebView : public QWebView, public DFMBaseView, public DFMAbstractEventHandler
+class DFMWebView : public QWebEngineView, public DFMBaseView, public DFMAbstractEventHandler
 {
     Q_OBJECT
 public:
@@ -33,7 +33,7 @@ private slots:
 private:
     bool fmEventFilter(const QSharedPointer<DFMEvent> &event, DFMAbstractEventHandler *target = 0, QVariant *resultData = 0) Q_DECL_OVERRIDE;
 
-    QWebView *createWindow(QWebPage::WebWindowType type) Q_DECL_OVERRIDE;
+    QWebEngineView *createWindow(QWebEnginePage::WebWindowType type) Q_DECL_OVERRIDE;
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 };
 
