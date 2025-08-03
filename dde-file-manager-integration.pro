@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-TARGET = dde-file-manager-integration
+TARGET = gxde-file-manager-integration
 TEMPLATE = subdirs
 
 SUBDIRS += webview clipboard-files nutstore-dfm-plugin thumbnail

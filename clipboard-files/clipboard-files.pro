@@ -2,13 +2,13 @@ QT       += core gui
 
 TEMPLATE = lib
 CONFIG += plugin link_pkgconfig
-PKGCONFIG += dde-file-manager
+PKGCONFIG += gxde-file-manager
 
 DESTDIR = $$_PRO_FILE_PWD_/../controllers
 
 OTHER_FILES += clipboard-files.json
 
-target.path = /usr/lib/$${QMAKE_HOST.arch}-linux-gnu/dde-file-manager/plugins/controllers
+target.path = /usr/lib/$${QMAKE_HOST.arch}-linux-gnu/gxde-file-manager/plugins/controllers
 
 INSTALLS += target
 
