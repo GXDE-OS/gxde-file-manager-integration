@@ -30,6 +30,8 @@ DFMWebView::DFMWebView(QWidget *parent)
 {
     DFMWebViewPrivate::lastCreateWebView = this;
 
+    QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+
     connect(this, &QWebEngineView::urlChanged, this, &DFMWebView::notifyUrlChanged);
 
     DFMEventDispatcher::instance()->installEventFilter(this);
