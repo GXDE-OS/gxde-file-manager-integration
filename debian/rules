@@ -3,7 +3,7 @@ include /usr/share/dpkg/default.mk
 
 VERSION=$(shell dpkg-parsechangelog -ldebian/changelog -SVersion | awk -F'-' '{print $$1}')
 DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
-
+export QT_SELECT=5
 %:
 	dh $@ --parallel
 

@@ -1,10 +1,9 @@
 Source: gxde-file-manager-integration
 Section: devel
 Priority: optional
-Maintainer: Deepin Packages Builder <packages@linuxdeepin.com>
-Build-Depends: debhelper (>=9), pkg-config, qt5-qmake, qtbase5-dev, 
-#libqt5webkit5-dev, 
- 		libgxde-file-manager-dev, libfontconfig1-dev
+Maintainer: gfdgd xi <3025613752@qq.com>
+Build-Depends: debhelper (>=9), pkg-config, qt5-qmake, qtbase5-dev, qtwebengine5-dev, 
+ 		libgxde-file-manager-dev, libfontconfig1-dev, qtchooser
 Standards-Version: 3.9.6
 Homepage: http://www.deepin.org
 
@@ -12,7 +11,7 @@ Package: gxde-file-manager-integration
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
  libgxde-file-manager
-Description: Deepin File manager plugin integration
+Description: GXDE File manager plugin integration
  Include the following plugins:
  1: Browse the web page plugin.
  2: View the files in the system clipboard.
