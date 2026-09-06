@@ -125,7 +125,7 @@ DFMGenericPluginObject::DFMGenericPluginObject(QObject *parent)
 
     connect(client, &QTcpSocket::connected, this, &DFMGenericPluginObject::updateNSRootPathList);
     connect(client, &QTcpSocket::readyRead, this, &DFMGenericPluginObject::onClientReadReady);
-    connect(client, static_cast<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(&QTcpSocket::error), this, [this] {
+    connect(client, &QTcpSocket::errorOccurred, this, [this] {
         qWarning() << "The localhost:19080 tcp socket error:" << client->errorString();
 
         // reset

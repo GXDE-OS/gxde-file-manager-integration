@@ -13,7 +13,7 @@
 
 #include <QWebEngineHistory>
 #include <QAction>
-#include <QWebEngineContextMenuData>
+#include <QWebEngineContextMenuRequest>
 #include <QWebEngineSettings>
 #include <QMenu>
 
@@ -30,7 +30,7 @@ DFMWebView::DFMWebView(QWidget *parent)
 {
     DFMWebViewPrivate::lastCreateWebView = this;
 
-    QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
     connect(this, &QWebEngineView::urlChanged, this, &DFMWebView::notifyUrlChanged);
 
@@ -107,8 +107,8 @@ QWebEngineView *DFMWebView::createWindow(QWebEnginePage::WebWindowType type)
 
 void DFMWebView::contextMenuEvent(QContextMenuEvent *event)
 {
-    const QWebEngineContextMenuData &data = page()->contextMenuData();
-    const DUrl url = data.linkUrl();
+    const QWebEngineContextMenuRequest *request = lastContextMenuRequest();
+    const DUrl url = request ? request->linkUrl() : DUrl();
 
     if (url.isEmpty()) {
         return QWebEngineView::contextMenuEvent(event);
