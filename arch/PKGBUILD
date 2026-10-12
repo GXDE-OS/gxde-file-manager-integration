@@ -1,0 +1,44 @@
+# Maintainer: CharOfString <root@charofstring.cc>
+pkgname=gxde-file-manager-integration-git
+pkgver=0.2.2
+pkgrel=1
+pkgdesc='Extra plugins for the GXDE file manager'
+arch=('x86_64' 'aarch64')
+url="https://github.com/GXDE-OS/gxde-file-manager-integration"
+license=('GPL-3.0-or-later')
+depends=('libgxde-file-manager-git' 'qt6-base' 'qt6-webengine' 'fontconfig' 'libgcc' 'libstdc++' 'glibc')
+makedepends=('git' 'qt6-tools')
+provides=('gxde-file-manager-integration')
+conflicts=('gxde-file-manager-integration')
+source=()
+sha512sums=()
+
+# 直接使用 PKGBUILD 所在的 git 仓库作为源码 ・ Build from the git checkout this PKGBUILD lives in.
+_srcroot() {
+  git -C "$startdir" rev-parse --show-toplevel
+}
+
+build() {
+  # 与 debian/rules 相同 ・ Same as debian/rules.
+  mkdir -p build
+  cd build
+  qmake6 "$(_srcroot)/dde-file-manager-integration.pro" \
+    DAPP_VERSION=$pkgver \
+    LIB_INSTALL_DIR=/usr/lib \
+    QMAKE_CFLAGS_RELEASE="$CFLAGS" \
+    QMAKE_CXXFLAGS_RELEASE="$CXXFLAGS" \
+    QMAKE_LFLAGS_RELEASE="$LDFLAGS"
+  make
+}
+
+package() {
+  make -C build INSTALL_ROOT="$pkgdir" install
+
+  # .pro 中写死了 Debian 的多架构路径 /usr/lib/<arch>-linux-gnu，Arch 上文件管理器从
+  # /usr/lib/gxde-file-manager/plugins 加载插件
+  # The .pro files hardcode Debian's multiarch /usr/lib/<arch>-linux-gnu; on
+  # Arch the file manager loads plugins from /usr/lib/gxde-file-manager/plugins.
+  local _multiarch=("$pkgdir"/usr/lib/*-linux-gnu)
+  mv "${_multiarch[0]}/gxde-file-manager" "$pkgdir/usr/lib/"
+  rmdir "${_multiarch[0]}"
+}
