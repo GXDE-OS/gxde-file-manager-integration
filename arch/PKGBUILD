@@ -1,15 +1,16 @@
 # Maintainer: CharOfString <root@charofstring.cc>
-pkgname=gxde-file-manager-integration-git
+pkgname=gxde-file-manager-integration
 pkgver=0.2.2
 pkgrel=1
 pkgdesc='Extra plugins for the GXDE file manager'
 arch=('x86_64' 'aarch64')
 url="https://github.com/GXDE-OS/gxde-file-manager-integration"
 license=('GPL-3.0-or-later')
-depends=('libgxde-file-manager-git' 'qt6-base' 'qt6-webengine' 'fontconfig' 'libgcc' 'libstdc++' 'glibc')
+depends=('libgxde-file-manager' 'qt6-base' 'qt6-webengine' 'fontconfig' 'libgcc' 'libstdc++' 'glibc')
 makedepends=('git' 'qt6-tools')
-provides=('gxde-file-manager-integration')
-conflicts=('gxde-file-manager-integration')
+provides=("gxde-file-manager-integration-git=$pkgver")
+conflicts=('gxde-file-manager-integration-git')
+replaces=('gxde-file-manager-integration-git')
 source=()
 sha512sums=()
 
